@@ -37,23 +37,6 @@
       <script src="item-data.js"></script>
       <div id="app">
 
-        <!--ul class="lists">
-            <li v-for="(value, key) in this.pickedItems">
-                {{key}}
-                <ul>
-                    <li v-for="itemList in value">
-                        <ul>
-                            <li v-for="item in itemList">
-                                <a :href="getItemUrl(item)" target="_blank">
-                                    <img :src="getImgUrl(item)">
-                                    {{item}}
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-        </ul-->
         <h2>Terraria Randomized Item Progression</h2>
         <button @click="showSettings=!showSettings">{{showSettings ? "Hide Settings" : "Show Settings"}}</button>
         <div v-if="showSettings">
@@ -128,7 +111,6 @@
                 </li>
             </ul>
         </div>
-
 
 
       </div>
@@ -254,7 +236,6 @@
                 })
 
                 this.pickedItems = pickedItems;
-                //console.log(this.pickedItems);
 
                 window.history.replaceState('', '', window.location.href.split('?')[0])
             },
@@ -322,12 +303,27 @@
             },
             getItemUrl(item_name)
             {
-                //console.log(item_name);
-                console.log(item_name)
                 return itemInfo[item_name][1];
             },
             copyURL(){ 
-                navigator.clipboard.writeText(updateURLParameter(window.location.href, "card", btoa(JSON.stringify(this.pickedItems))));
+                let pickedIds = {};
+                for (const [stage, itemCats] of Object.entries(this.pickedItems)) {
+                    pickedIds[stage] = [];
+                    for (let i = 0; i < 3; i++) {
+                        pickedIds[stage].push([]);
+                        let items = itemCats[i];
+                        for (let j = 0; j < items.length; j++) {
+                            pickedIds[stage][i].push(parseInt(itemInfo[items[j]][0]));
+                        }
+                    }
+                }
+                navigator.clipboard.writeText(updateURLParameter(window.location.href, "card", btoa(JSON.stringify(pickedIds))));
+            },
+            itemIdToName(itemId)
+            {
+                for (const [itemName, itemData] of Object.entries(itemInfo)) {
+                    if (itemData[0] == itemId.toString()) return itemName;
+                }
             }
             
            },
@@ -335,7 +331,23 @@
             const urlParams = new URLSearchParams(new URL(window.location.href).search);
             let card = urlParams.get('card');
             if (!card) return;
-            this.pickedItems = JSON.parse(atob(card));
+
+            let pickedIds = JSON.parse(atob(card));
+            let pickedItems = {}
+
+            for (const [stage, itemCats] of Object.entries(pickedIds)) {
+                pickedItems[stage] = [];
+                for (let i = 0; i < 3; i++) {
+                    pickedItems[stage].push([]);
+                    let items = itemCats[i];
+                    for (let j = 0; j < items.length; j++) {
+                        pickedItems[stage][i].push(this.itemIdToName(items[j]));
+                    }
+                }
+            }
+
+            this.pickedItems = pickedItems;
+
             this.rolled = true;
 
            }
