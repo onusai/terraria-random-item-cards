@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+   <meta charset="UTF-8">
+   <title>Item Randomizer</title>
+   <meta name="viewport" content="width=device-width,initial-scale=1">
+   <style>
+        .lists {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .num-in {
+            max-width: 70px;
+        }
+
+        .roll-btn {
+            font-size: 1.5em;
+            display: flex;
+            -ms-flex-align: center;
+            margin-top: 10px;
+        }
+
+        .roll-btn img {
+            max-width: 30px;
+            max-height: 30px;
+            margin-right: 10px;
+        }
+
+        .copy-btn {
+            margin-top: 10px;
+        }
+   </style>
+   <body>
+      <script src="https://unpkg.com/vue@3"></script>
+      <script src="items.js"></script>
+      <script src="item-data.js"></script>
+      <div id="app">
+
+        <!--ul class="lists">
+            <li v-for="(value, key) in this.pickedItems">
+                {{key}}
+                <ul>
+                    <li v-for="itemList in value">
+                        <ul>
+                            <li v-for="item in itemList">
+                                <a :href="getItemUrl(item)" target="_blank">
+                                    <img :src="getImgUrl(item)">
+                                    {{item}}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul-->
+        <h2>Terraria Randomized Item Progression</h2>
+        <button @click="showSettings=!showSettings">{{showSettings ? "Hide Settings" : "Show Settings"}}</button>
+        <div v-if="showSettings">
+            
+            <p>Select how many items you want picked in each category and stage</p>
+            <table>
+                <tr>
+                    <td><label></label></td>
+                    <td><label>pre-boss</label></td>
+                    <td><label>pre-hm</label></td>
+                    <td><label>pre-mech</label></td>
+                    <td><label>pre-plant</label></td>
+                    <td><label>pre-golem</label></td>
+                    <td><label>pre-lunar</label></td>
+                    <td><label>post-ml</label></td>
+                </tr>
+                <tr>
+                    <td><label>Weapons</label></td>
+                    <td><input type="number" class="num-in" v-model="pb0" ></td>
+                    <td><input type="number" class="num-in" v-model="ph0" ></td>
+                    <td><input type="number" class="num-in" v-model="pm0" ></td>
+                    <td><input type="number" class="num-in" v-model="pp0" ></td>
+                    <td><input type="number" class="num-in" v-model="pg0" ></td>
+                    <td><input type="number" class="num-in" v-model="pl0" ></td>
+                    <td><input type="number" class="num-in" v-model="pml0" ></td>
+                </tr>
+                <tr>
+                    <td><label>Accessories</label></td>
+                    <td><input type="number" class="num-in" v-model="pb1" ></td>
+                    <td><input type="number" class="num-in" v-model="ph1" ></td>
+                    <td><input type="number" class="num-in" v-model="pm1" ></td>
+                    <td><input type="number" class="num-in" v-model="pp1" ></td>
+                    <td><input type="number" class="num-in" v-model="pg1" ></td>
+                    <td><input type="number" class="num-in" v-model="pl1" ></td>
+                    <td><input type="number" class="num-in" v-model="pml1" ></td>
+                </tr>
+                <tr>
+                    <td><label>Armors</label></td>
+                    <td><input type="number" class="num-in" v-model="pb2" ></td>
+                    <td><input type="number" class="num-in" v-model="ph2" ></td>
+                    <td><input type="number" class="num-in" v-model="pm2" ></td>
+                    <td><input type="number" class="num-in" v-model="pp2" ></td>
+                    <td><input type="number" class="num-in" v-model="pg2" ></td>
+                    <td><input type="number" class="num-in" v-model="pl2" ></td>
+                    <td><input type="number" class="num-in" v-model="pml2" ></td>
+                </tr>
+            </table>
+            <br><hr>
+        </div>
+        
+
+        <br>
+        <button class="roll-btn" @click="pickCard()">
+            <img src="img/roll.png">
+            Roll
+        </button>
+        <button class="copy-btn" v-if="rolled" @click="copyURL()">Copy Card URL</button>
+
+        <div v-if="rolled" v-for="(cat_name, cat_id) in this.cats">
+            <h3>{{cat_id}} </h3>
+            <ul class="lists">
+                <li v-for="(value, key) in this.pickedItems">
+                    {{key}}
+                    <ul>
+                        <li v-for="item in value[cat_name]">
+                            <a :href="getItemUrl(item)" target="_blank">
+                                <img :src="getImgUrl(item)">
+                                {{item}}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+
+
+      </div>
+      <script>
+        Array.prototype.sample = function(){
+            return this[Math.floor(Math.random()*this.length)];
+        }
+
+        function updateURLParameter(url, param, paramVal)
+        {
+            var TheAnchor = null;
+            var newAdditionalURL = "";
+            var tempArray = url.split("?");
+            var baseURL = tempArray[0];
+            var additionalURL = tempArray[1];
+            var temp = "";
+
+            if (additionalURL) 
+            {
+                var tmpAnchor = additionalURL.split("#");
+                var TheParams = tmpAnchor[0];
+                    TheAnchor = tmpAnchor[1];
+                if(TheAnchor)
+                    additionalURL = TheParams;
+
+                tempArray = additionalURL.split("&");
+
+                for (var i=0; i<tempArray.length; i++)
+                {
+                    if(tempArray[i].split('=')[0] != param)
+                    {
+                        newAdditionalURL += temp + tempArray[i];
+                        temp = "&";
+                    }
+                }        
+            }
+            else
+            {
+                var tmpAnchor = baseURL.split("#");
+                var TheParams = tmpAnchor[0];
+                    TheAnchor  = tmpAnchor[1];
+
+                if(TheParams)
+                    baseURL = TheParams;
+            }
+
+            if(TheAnchor)
+                paramVal += "#" + TheAnchor;
+
+            var rows_txt = temp + "" + param + "=" + paramVal;
+            return baseURL + "?" + newAdditionalURL + rows_txt;
+        }
+
+         Vue.createApp({
+           data() {
+             return {
+                cats: {"Weapons": 0, "Accessories": 1, "Armor": 2},
+                pb0: 2, pb1: 5, pb2: 1,
+                ph0: 2, ph1: 5, ph2: 1, 
+                pm0: 2, pm1: 5, pm2: 1,
+                pp0: 2, pp1: 5, pp2: 1,
+                pg0: 2, pg1: 5, pg2: 1, 
+                pl0: 2, pl1: 5, pl2: 1, 
+                pml0: 2, pml1: 5, pml2: 1, 
+                pickedItems: {},
+                pickedItemsAll: [],
+                showSettings: false,
+                rolled: false
+             }
+           },
+           methods: {
+            pickCard() {
+                this.rolled = true;
+
+                // reset vars
+                let pickedItems = {
+                "pre-boss": [[], [], []],
+                "pre-hm": [[], [], []],
+                "pre-mech": [[], [], []],
+                "pre-plant": [[], [], []],
+                "pre-golem": [[], [], []],
+                "pre-lunar": [[], [], []],
+                "post-ml": [[], [], []],
+                }
+                this.pickedItemsAll = [];
+
+                let stages = Object.keys(itemData);
+
+                stages.forEach(stage => {
+                    let numItems = {
+                        "pre-boss": [this.pb0, this.pb1, this.pb2],
+                        "pre-hm": [this.ph0, this.ph1, this.ph2],
+                        "pre-mech": [this.pm0, this.pm1, this.pm2],
+                        "pre-plant": [this.pp0, this.pp1, this.pp2],
+                        "pre-golem": [this.pg0, this.pg1, this.pg2],
+                        "pre-lunar": [this.pl0, this.pl1, this.pl2],
+                        "post-ml": [this.pml0, this.pml1, this.pml2]
+                        }[stage]
+
+                    // wep
+                    for (let i = 0; i < numItems[0]; i++){
+                        let pickedItem = this.pickItem(stage, ["mele", "range", "magic", "summon", "mixed"])
+                        pickedItems[stage][0].push(pickedItem);
+                    }
+                    
+                    // acc
+                    for (let i = 0; i < numItems[1]; i++){
+                        let pickedItem = this.pickItem(stage, ["acc"])
+                        pickedItems[stage][1].push(pickedItem);
+                    }
+
+                    // armor
+                    for (let i = 0; i < numItems[2]; i++){
+                        let pickedItem = this.pickArmor(stage, "head");
+                        pickedItems[stage][2].push(pickedItem);
+
+                        pickedItem = this.pickArmor(stage, "chest");
+                        pickedItems[stage][2].push(pickedItem);
+
+                        pickedItem = this.pickArmor(stage, "legs");
+                        pickedItems[stage][2].push(pickedItem);
+                    }
+                })
+
+                this.pickedItems = pickedItems;
+                //console.log(this.pickedItems);
+
+                window.history.replaceState('', '', window.location.href.split('?')[0])
+            },
+            pickItem(stage, types) {
+
+                let pool = []
+                types.forEach(type => { pool = pool.concat(itemData[stage][type]) });
+
+                let pickedItem = pool.sample()
+                if (typeof(pickedItem) === "string"){
+                    if (pickedItem in itemExpands) {
+                        pickedItem = itemExpands[pickedItem].sample();
+                    }
+                }
+                else {
+                    pickedItem = pickedItem.sample();
+                }
+
+                if (this.pickedItemsAll.includes(pickedItem)) {
+                    pickedItem = this.pickItem(stage, types);
+                }
+
+                this.pickedItemsAll.push(pickedItem);
+                return pickedItem;
+
+            },
+            pickArmor(stage, type)
+            {
+                let pool = [].concat(itemData[stage]["armor"]["all"], itemData[stage]["armor"][type])
+                let pickedItem = pool.sample();
+
+                if (typeof(pickedItem) === "string"){
+                    if (pickedItem in itemExpands) {
+                        pickedItem = itemExpands[pickedItem];
+                    }
+                }
+                else {
+                    pickedItem = pickedItem.sample();
+                }
+
+                if (typeof(pickedItem) !== "string"){
+                    let typeIdx = {"head": 0, "chest": 1, "legs": 2};
+                    pickedItem = pickedItem[typeIdx[type]];
+
+                    if (typeof(pickedItem) !== "string"){
+                        pickedItem = pickedItem.sample();
+                    }
+                }
+
+                if (this.pickedItemsAll.includes(pickedItem)) {
+                    pickedItem = this.pickArmor(stage, type);
+                }
+
+                this.pickedItemsAll.push(pickedItem);
+                return pickedItem;
+            },
+            getImgUrl(item_name) {
+                
+                if (item_name == "Counterweights") {
+                    return `img/item/-2.gif`
+                }
+                let item_id = itemInfo[item_name][0];
+                let url = `img/item/${item_id}.png`
+                return url;
+            },
+            getItemUrl(item_name)
+            {
+                //console.log(item_name);
+                console.log(item_name)
+                return itemInfo[item_name][1];
+            },
+            copyURL(){ 
+                navigator.clipboard.writeText(updateURLParameter(window.location.href, "card", btoa(JSON.stringify(this.pickedItems))));
+            }
+            
+           },
+           mounted() {
+            const urlParams = new URLSearchParams(new URL(window.location.href).search);
+            let card = urlParams.get('card');
+            if (!card) return;
+            this.pickedItems = JSON.parse(atob(card));
+            this.rolled = true;
+
+           }
+         }).mount('#app')
+         
+      </script>
+   </body>
+</html>
