@@ -85,6 +85,17 @@ const itemData = {
             "Sandstorm in a Bottle",
             "Tsunami in a Bottle",
             "Shiny Red Balloon",
+            [
+                "Cloud in a Balloon",
+                "Blizzard in a Balloon",
+                "Sandstorm in a Balloon"
+            ],
+            [
+                "Blue Horseshoe Balloon",
+                "Yellow Horseshoe Balloon",
+                "White Horseshoe Balloon"
+            ],
+            "Bundle of Balloons",
             "Band of Regeneration",
             "Frog Leg",
             "Lucky Horseshoe",
@@ -192,7 +203,16 @@ const itemData = {
             "Worm Scarf",
             "Brain of Confusion",
             "Fledgling Wings",
-            "Cloud in a Balloon",
+            [
+                "Cloud in a Balloon",
+                "Blizzard in a Balloon",
+                "Sandstorm in a Balloon"
+            ],
+            [
+                "Blue Horseshoe Balloon",
+                "Yellow Horseshoe Balloon",
+                "White Horseshoe Balloon"
+            ],
             "Bundle of Balloons",
             "Lightning Boots",
             "Terraspark Boots",
