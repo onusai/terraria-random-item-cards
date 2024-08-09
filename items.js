@@ -252,7 +252,7 @@ const itemData = {
             "Drippler Crippler",
             "Flying Knife",
             "Ham Bat",
-            "Obsidian Swordfish"
+            "Obsidian Swordfish",
         ],
         "range":[
             "Coin Gun",
@@ -322,9 +322,19 @@ const itemData = {
             "Obsidian Shield",
             "Ankh Shield",
             "Charm of Myths",
-            "Frozen Wings",
             "Putrid Scent",
-            "Flesh Knuckles"
+            "Flesh Knuckles",
+            "Fairy Wings",
+            "Frozen Wings",
+            "Harpy Wings",
+            "Bee Wings",
+            "Butterfly Wings",
+            "Angel Wings",
+            "Demon Wings",
+            "Leaf Wings",
+            "Jetpack",
+            "Fin Wings"
+
         ],
         "armor": {
             "all": [
@@ -426,7 +436,8 @@ const itemData = {
             "Ankh Shield",
             "Charm of Myths",
             "Flame Wings",
-            "Bat Wings"
+            "Bat Wings",
+            "Steampunk Wings"
         ],
         "armor": {
             "all": [
@@ -537,8 +548,9 @@ const itemData = {
             "Amphibian Boots",
             "Ankh Shield",
             "Charm of Myths",
-            "Flame Wings",
-            "Mothron Wings",
+            ["Spectre Wings", "Empress Wings", "Betsy's Wings"],
+            ["Tattered Fairy Wings", "Spooky Wings", "Festive Wings", "Beetle Wings"],
+            ["Mothron Wings", "Flame Wings"],
             "Hoverboard",
             "Moon Stone"
     
