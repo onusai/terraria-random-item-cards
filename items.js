@@ -344,16 +344,17 @@ const itemData = {
             "Charm of Myths",
             "Putrid Scent",
             "Flesh Knuckles",
-            "Fairy Wings",
-            "Frozen Wings",
-            "Harpy Wings",
-            "Bee Wings",
-            "Butterfly Wings",
-            "Angel Wings",
-            "Demon Wings",
-            "Leaf Wings",
-            "Jetpack",
-            "Fin Wings"
+            ["Fairy Wings",
+            "Fin Wings"],
+            ["Frozen Wings",
+            "Harpy Wings"],
+            ["Bee Wings",
+            "Butterfly Wings"],
+            ["Angel Wings",
+            "Demon Wings"],
+            ["Leaf Wings",
+            "Jetpack"],
+            
 
         ],
         "armor": {
