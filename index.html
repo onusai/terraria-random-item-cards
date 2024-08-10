@@ -4,6 +4,10 @@
    <title>Item Randomizer</title>
    <meta name="viewport" content="width=device-width,initial-scale=1">
    <style>
+        html, body {
+            width: auto;
+            font-family: sans-serif;
+        }
         .lists {
             display: flex;
             flex-direction: row;
@@ -17,7 +21,7 @@
         .roll-btn {
             font-size: 1.5em;
             display: flex;
-            -ms-flex-align: center;
+            align-items: center;
             margin-top: 10px;
         }
 
@@ -30,7 +34,31 @@
         .copy-btn {
             margin-top: 10px;
         }
-   </style>
+
+        .list-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .list-item img {
+            padding-right: 5px;
+        }
+
+        a{
+            text-decoration: none;
+        }
+
+        a:visited{
+            text-decoration: none;
+            color: rgb(0, 102, 204);
+        }
+
+        .list {
+            margin-right: 10px;
+        }
+    </style>
    <body>
       <script src="https://unpkg.com/vue@3"></script>
       <script src="items.js"></script>
@@ -98,16 +126,13 @@
         <div v-if="rolled" v-for="(cat_name, cat_id) in this.cats">
             <h3>{{cat_id}} </h3>
             <ul class="lists">
-                <li v-for="(value, key) in this.pickedItems">
+                <li class="list" v-for="(value, key) in this.pickedItems">
                     {{key}}
-                    <ul>
-                        <li v-for="item in value[cat_name]">
-                            <a :href="getItemUrl(item)" target="_blank">
-                                <img :src="getImgUrl(item)">
-                                {{item}}
-                            </a>
-                        </li>
-                    </ul>
+                    <div style="margin: 10px"></div>
+                        <div class="list-item" v-for="item in value[cat_name]">
+                            <img :src="getImgUrl(item)">
+                            <a :href="getItemUrl(item)" target="_blank">{{item}}</a>
+                        </div>
                 </li>
             </ul>
         </div>
