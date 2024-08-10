@@ -612,7 +612,8 @@ const itemData = {
             "Vampire Knives",
             "Possessed Hatchet",
             "Starlight",
-            "Golem Fist"
+            "Golem Fist",
+            "Daybreak"
         ],
         "range":[
             "Xenopopper",
@@ -624,7 +625,9 @@ const itemData = {
             "Tsunami",
             "Eventide",
             "Aerial Bane",
-            "Stynger"
+            "Stynger",
+            "Phantasm",
+            "Vortex Beater"
         ],
         "magic":[
             "Razorpine",
@@ -638,7 +641,8 @@ const itemData = {
             "Betsy's Wrath",
             "Stellar Tune",
             "Staff of Earth",
-            "Heat Ray"
+            "Heat Ray",
+            "Nebula Arcanum"
         ],
         "summon":[
             "Xeno Staff",
@@ -648,7 +652,9 @@ const itemData = {
             "Terraprisma",
             "Morning Star",
             "Dark Harvest",
-            "Kaleidoscope"
+            "Kaleidoscope",
+            "Stardust Cell Staff",
+            "Stardust Dragon Staff"
         ],
         "mixed":[
     
