@@ -12,6 +12,7 @@
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
+            margin-left: 20px;
         }
 
         .num-in {
@@ -57,8 +58,11 @@
         }
 
         .list {
-            margin-right: 10px;
-            
+            margin-right: 10px;   
+        }
+
+        h3 {
+            margin-bottom: 5px;
         }
 
     </style>
@@ -128,16 +132,16 @@
 
         <div v-if="rolled" v-for="(cat_name, cat_id) in this.cats">
             <h3>{{cat_id}} </h3>
-            <ul class="lists">
-                <li class="list" v-for="(value, key) in this.pickedItems">
-                    {{key}}
+            <div class="lists">
+                <div class="list" v-for="(value, key) in this.pickedItems">
+                    
                     <div style="margin: 10px"></div>
                         <div class="list-item" v-for="item in value[cat_name]">
                             <img :src="getImgUrl(item)">
                             <a :href="getItemUrl(item)" target="_blank">{{item}}</a>
                         </div>
-                </li>
-            </ul>
+                </div>
+            </div>
         </div>
 
 
